@@ -76,7 +76,7 @@ class ChannelController extends Controller
             Log::info('Creating channel');
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
-                'game_id' => 'required|number'
+                'game_id' => 'required'
             ]);
             if ($validator->fails()) {
                 return response()->json(

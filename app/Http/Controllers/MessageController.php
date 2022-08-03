@@ -17,7 +17,7 @@ class MessageController extends Controller
             Log::info('Creating message');
             $validator = Validator::make($request->all(), [
                 'content' => 'required|string',
-                'channel_id' => 'required|number'
+                'channel_id' => 'required'
             ]);
             if ($validator->fails()) {
                 return response()->json(
