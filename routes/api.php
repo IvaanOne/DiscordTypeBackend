@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route Bienvenida
 
-Route::post('/', function() {
+Route::get('/', function() {
     return "Bienvenido";
 });
 
