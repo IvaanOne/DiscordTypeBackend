@@ -80,10 +80,10 @@ class UserController extends Controller
                 'data' => $user,
             ]);
         } catch (\Exception $exception) {
-            Log::info($exception);
+            Log::info($exception->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Sorry, the user cannot join the party'
+                'message' => ('Sorry, the user cannot join the party' . $exception->getMessage())
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -99,10 +99,10 @@ class UserController extends Controller
                 'data' => $user,
             ]);
         } catch (\Exception $exception) {
-            Log::info($exception);
+            Log::info($exception->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Sorry, the user couldnt left the party'
+                'message' => ('Sorry, the user couldnt left the party' . $exception->getMessage())
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
