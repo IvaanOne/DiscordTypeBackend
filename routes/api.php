@@ -36,7 +36,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
-
+// GAMES ROUTES ------
 Route::group(
     ['middleware' => 'jwt.auth','isSuperAdmin'], 
     function (){
@@ -44,7 +44,9 @@ Route::group(
     Route::delete('/deleteGame/{id}',  [GameController::class, 'deleteGameById']);
 });
 
-// GAMES ROUTES ------
+Route::get('/games', [GameController::class, 'getAllGames']);
+
+
 
 Route::group(
     [],

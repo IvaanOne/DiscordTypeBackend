@@ -4,11 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class GameController extends Controller
 {
+    public function getAllGames()
+    {
+        try {
+            Log::info('Getting all games');
+            $games = DB::table('games')->select('name')->get()->toArray();
+
+            return response()->json([
+                'success' => true,
+                'message' => "Games retrieved successfull",
+                'data' => $games,
+            ]);
+        } catch (\Exception $exception) {
+            Log::info('Error getting games' . $exception->getMessage());
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "Error getting games"
+
+                ],
+                500
+            );
+        }
+    }
     public function createGame(Request $request)
     {
         try {
@@ -54,10 +78,10 @@ class GameController extends Controller
             Log::info('Deleting game');
             $game = Game::query()->find($id);
             $game->delete();
-            
+
             return response()->json([
                 'success' => true,
-                'message' => "game deleted succesfull",
+                'message' => "Game deleted succesfull",
             ]);
         } catch (\Throwable $exception) {
             Log::info('Error deleting game' . $exception->getMessage());
