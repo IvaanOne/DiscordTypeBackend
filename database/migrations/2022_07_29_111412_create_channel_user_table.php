@@ -19,8 +19,8 @@ class CreateChannelUserTable extends Migration
             $table->unsignedBigInteger("channel_id");
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('channels')->onDelete('cascade');
-            $table->foreign('channel_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('channel_id')->references('id')->on('channels')->onDelete('cascade');
         });
     }
 
