@@ -34,7 +34,7 @@ class ChannelController extends Controller
         }
     }
 
-    public function getChannelById($id)
+    public function getMessagesWithChannelById($id)
     {
         try {
 

@@ -56,6 +56,50 @@ class AuthController extends Controller
             ]
         );
     }
+    public function updateProfile(Request $request)
+    {
+        try {
+            Log::info('Uptading profile');
+            $user = User::find(auth()->user());
+            $validator = Validator::make($request->all(), [
+                'name' => 'string',
+            ]);
+            if ($validator->fails()) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => $validator->errors()
+                    ],
+                    400
+                );
+            };
+
+            if($request->input('name')){$user->name = $request->input('name');};
+
+            $user->save();
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => "Profile updated successfull",
+                    'data' => $user
+
+                ],
+                200
+            );
+
+        } catch (\Exception $exception) {
+            Log::info('Error updating task' . $exception->getMessage());
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "Error updating task"
+
+                ],
+                500
+            );
+        }
+    }
+
     public function logout(Request $request)
     {
         $this->validate($request, [

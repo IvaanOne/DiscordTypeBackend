@@ -72,7 +72,7 @@ class UserController extends Controller
     {
         try {
             $user = User::query()->find(auth()->user()->id);
-            $user->channels()->attach(self::$id);
+            $user->channels()->attach($id);
 
             return response()->json([
                 'success' => true,
@@ -91,7 +91,7 @@ class UserController extends Controller
     {
         try {
             $user = User::query()->find(auth()->user()->id);
-            $user->channels()->detach(self::$id);
+            $user->channels()->detach($id);
 
             return response()->json([
                 'success' => true,
