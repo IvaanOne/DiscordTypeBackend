@@ -5,21 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Game extends Model
+class Channel extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'name',
-        'user_id',
+        'game_id',
     ];
-
-    public function user()
+    public function game()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Game::class);
     }
-    public function channels()
+    public function messages()
     {
-        return $this->belongsToMany(Channel::class);
+        return $this->belongsToMany(Message::class);
     }
 }

@@ -33,6 +33,42 @@ class GameController extends Controller
             );
         }
     }
+
+    public function getGameById($id)
+    {
+        try {
+            Log::info('Getting game by id');
+            $game = Game::query()->find($id);
+            $channelsGame = Game::query()->find($id)->channels->name;
+
+
+            if(!$game){
+                return response()->json([
+                    'success' => true,
+                    'message' => "Game not found",
+                ],
+                404
+            );
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => "Game retrieved successfull",
+                'data' => $game, $channelsGame,
+            ]);
+        } catch (\Exception $exception) {
+            Log::info('Error getting game' . $exception->getMessage());
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "Error getting game"
+
+                ],
+                500
+            );
+        }
+    }
+
     public function createGame(Request $request)
     {
         try {
