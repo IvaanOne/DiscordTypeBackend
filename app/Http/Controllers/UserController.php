@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -38,9 +39,7 @@ class UserController extends Controller
         try {
 
             Log::info('Getting user by id');
-            $user = User::query()->find($id)->roles()->get();
-            // OPCION CON FIRST
-            // $user = User::query()->where('id', $id)->first();
+            $user = User::query()->find($id);
 
             if(!$user){
                 return response()->json([
@@ -66,6 +65,45 @@ class UserController extends Controller
                 ],
                 500
             );
+        }
+    }
+
+    public function joinPartyById($id)
+    {
+        try {
+            $user = User::query()->find(auth()->user()->id);
+            $user->channels()->attach(self::$id);
+
+            return response()->json([
+                'success' => true,
+                'message' => "User joined to the party successfull",
+                'data' => $user,
+            ]);
+        } catch (\Exception $exception) {
+            Log::info($exception);
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, the user cannot join the party'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    public function getOutOfAPartyById($id)
+    {
+        try {
+            $user = User::query()->find(auth()->user()->id);
+            $user->channels()->detach(self::$id);
+
+            return response()->json([
+                'success' => true,
+                'message' => "User lefted the party succesfully",
+                'data' => $user,
+            ]);
+        } catch (\Exception $exception) {
+            Log::info($exception);
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, the user couldnt left the party'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
