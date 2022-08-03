@@ -68,7 +68,7 @@ class UserController extends Controller
         }
     }
 
-    public function joinPartyById($id)
+    public function joinChannelById($id)
     {
         try {
             $user = User::query()->find(auth()->user()->id);
@@ -87,7 +87,7 @@ class UserController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    public function getOutOfAPartyById($id)
+    public function getOutOfAChannelById($id)
     {
         try {
             $user = User::query()->find(auth()->user()->id);

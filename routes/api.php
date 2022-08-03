@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -33,6 +34,8 @@ Route::group(
     function (){
     Route::get('/profile',  [AuthController::class, 'me']);
     Route::delete('/logout',  [AuthController::class, 'logout']);
+    Route::post('/joinChannel/{id}',  [UserController::class, 'joinChannelById']);
+    Route::delete('/leftChannel/{id}',  [UserController::class, 'getOutOfAChannelById']);
 });
 
 // USER ADMIN ROUTES --------
@@ -50,14 +53,21 @@ Route::group(
     Route::post('/createGame',  [GameController::class, 'createGame']);
     Route::delete('/deleteGame/{id}',  [GameController::class, 'deleteGameById']);
     Route::get('/game/{id}',  [GameController::class, 'getGameById']);
-    Route::get('/games}',  [GameController::class, 'getAllGames']);
     
 });
 
 Route::get('/games', [GameController::class, 'getAllGames']);
 
 // CHANNELS ROUTES -----------
-
+Route::group(
+    ['middleware' => 'jwt.auth'], 
+    function (){
+    Route::get('/channels',  [ChannelController::class, 'getAllChannels']);
+    Route::get('/channel/{id}',  [ChannelController::class, 'getChannelById']);
+    Route::post('/createChannel',  [ChannelController::class, 'createChannel']);
+    Route::put('/updateChannel/{id}',  [ChannelController::class, 'updateChannel']);
+    Route::delete('/deleteChannel/{id}',  [ChannelController::class, 'deleteChannelById']);
+});
 // MESSAGES ROUTES -----------
 
 Route::group(
