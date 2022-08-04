@@ -34,12 +34,12 @@ class MessageController extends Controller
                     'success' => false,
                     'message' => 'Sorry, you arent in this channel'
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
-            $newMessage = Message::create([
-                'content' => $request->input('content'),
-                'channel_id' => $request->input('channel_id'),
-                'user_id' => auth()->user()->id
-            ]);
+            } else
+                $newMessage = Message::create([
+                    'content' => $request->input('content'),
+                    'channel_id' => $request->input('channel_id'),
+                    'user_id' => auth()->user()->id
+                ]);
             return response()->json([
                 'success' => true,
                 'message' => "Message created successfull",
@@ -74,21 +74,26 @@ class MessageController extends Controller
                     400
                 );
             };
-
-            if ($request->input('content')) {
-                $message->content = $request->input('content');
-            };
-
-            $message->save();
-            return response()->json(
-                [
-                    'success' => true,
-                    'message' => "Message updated successfull",
-                    'data' => $message
-
-                ],
-                200
-            );
+            if (auth()->user()->id == $message->user_id) {
+                if ($request->input('content')) {
+                    $message->content = $request->input('content');
+                    $message->save();
+                    return response()->json(
+                        [
+                            'success' => true,
+                            'message' => "Message updated successfull",
+                            'data' => $message
+    
+                        ],
+                        200
+                    );
+                };
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => "You are not authoritzed to update a message from another user",
+                ]);
+            }
         } catch (\Exception $exception) {
             Log::info('Error updating message' . $exception->getMessage());
             return response()->json(
@@ -106,13 +111,20 @@ class MessageController extends Controller
     {
         try {
             Log::info('Deleting message');
-            $message = Message::query()->find($id);
 
-            $message->delete();
-            return response()->json([
-                'success' => true,
-                'message' => "Message deleted succesfull",
-            ]);
+            $message = Message::query()->find($id);
+            if (auth()->user()->id == $message->user_id) {
+                $message->delete();
+                return response()->json([
+                    'success' => true,
+                    'message' => "Message deleted succesfull",
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => "You are not authoritzed to delete a message from another user",
+                ]);
+            }
         } catch (\Throwable $exception) {
             Log::info('Error deleting message' . $exception->getMessage());
             return response()->json(
