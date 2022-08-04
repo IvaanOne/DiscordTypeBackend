@@ -51,7 +51,7 @@ class MessageController extends Controller
             return response()->json(
                 [
                     'success' => false,
-                    'message' => "Error creating the message"
+                    'message' => ("Error creating the message" . $exception->getMessage() )
 
                 ],
                 500
