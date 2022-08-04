@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Channel;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -38,8 +39,9 @@ class ChannelController extends Controller
     {
         try {
 
-            Log::info('Getting channel by id');
+            Log::info('Getting messages from channel by id');
             $channel = Channel::query()->find($id);
+            $messages = Message::query()->get()->where($id, 'channel_id');
             // $messagesChannel = Channel::query()->find($id)->messages;
 
 
@@ -55,7 +57,7 @@ class ChannelController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => "Channel retrieved successfull",
-                'data' => $channel
+                'data' => $channel, $messages
             ]);
         } catch (\Exception $exception) {
             Log::info('Error getting channel' . $exception->getMessage());
