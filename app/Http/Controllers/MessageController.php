@@ -38,7 +38,7 @@ class MessageController extends Controller
                 $newMessage = Message::create([
                     'content' => $request->input('content'),
                     'channel_id' => $request->input('channel_id'),
-                    'user_id' => auth()->user()->id
+                    'user_id' => $user->id
                 ]);
                 return response()->json([
                     'success' => true,
