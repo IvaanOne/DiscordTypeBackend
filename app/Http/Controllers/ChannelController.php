@@ -101,7 +101,7 @@ class ChannelController extends Controller
             return response()->json(
                 [
                     'success' => false,
-                    'message' => ("Error creating the channel" . $exception->getMessage())
+                    'message' => "Error creating the channel"
 
                 ],
                 500

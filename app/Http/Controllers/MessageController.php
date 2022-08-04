@@ -34,17 +34,18 @@ class MessageController extends Controller
                     'success' => false,
                     'message' => 'Sorry, you arent in this channel'
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            } else
+            } else {
                 $newMessage = Message::create([
                     'content' => $request->input('content'),
                     'channel_id' => $request->input('channel_id'),
                     'user_id' => auth()->user()->id
                 ]);
-            return response()->json([
-                'success' => true,
-                'message' => "Message created successfull",
-                'data' => $newMessage,
-            ]);
+                return response()->json([
+                    'success' => true,
+                    'message' => "Message created successfull",
+                    'data' => $newMessage,
+                ]);
+            }
         } catch (\Exception $exception) {
             Log::info('Error creating the message' . $exception->getMessage());
             return response()->json(
@@ -57,6 +58,7 @@ class MessageController extends Controller
             );
         }
     }
+
     public function updateMessageById($id, Request $request)
     {
         try {
@@ -83,7 +85,7 @@ class MessageController extends Controller
                             'success' => true,
                             'message' => "Message updated successfull",
                             'data' => $message
-    
+
                         ],
                         200
                     );
