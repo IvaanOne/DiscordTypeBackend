@@ -41,7 +41,7 @@ class ChannelController extends Controller
 
             Log::info('Getting messages from channel by id');
             $channel = Channel::query()->find($id);
-            $messages = Message::query()->get()->where($id, 'channel_id');
+            $messages = Message::query()->get()->where('channel_id', '=', $id);
             // $messagesChannel = Channel::query()->find($id)->messages;
 
 
