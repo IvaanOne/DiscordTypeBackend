@@ -40,8 +40,9 @@ class ChannelController extends Controller
         try {
 
             Log::info('Getting messages from channel by id');
-            $channel = Channel::query()->find($id);
-            $messages = Message::query()->get()->where('channel_id', '=', $id);
+            $channel = Channel::query()->find($id)->name;
+            $messagesContent = Message::query()->get()->where('channel_id', '=', $id)->content;
+            $messagesUserId = Message::query()->get()->where('channel_id', '=', $id)->user_id;
             // $messagesChannel = Channel::query()->find($id)->messages;
 
 
@@ -56,15 +57,15 @@ class ChannelController extends Controller
             
             return response()->json([
                 'success' => true,
-                'message' => "Channel retrieved successfull",
-                'data' => $channel, $messages
+                'message' => "Messages from the channel retrieved successfull",
+                'data' => [$channel, $messagesUserId, $messagesContent]
             ]);
         } catch (\Exception $exception) {
             Log::info('Error getting channel' . $exception->getMessage());
             return response()->json(
                 [
                     'success' => false,
-                    'message' => ("Error getting the messages from the channel" . $exception->getMessage())
+                    'message' => "Error getting the messages from the channel"
 
                 ],
                 500
